@@ -1,4 +1,4 @@
 line-bot-sdk
 flask
-trnsformers
+transformers
 gunicorn
