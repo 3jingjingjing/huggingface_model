@@ -3,12 +3,11 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import TextMessage, MessageEvent, TextSendMessage
 import os
-import openai
 import tempfile
 import datetime
 import time
 import string
-from depression_finetune import GPT_response
+from huggingface_model import hug_response
 
 app = Flask(__name__, template_folder='templates')
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
@@ -19,8 +18,6 @@ line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 # Channel Secret
 handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 
-# OPENAI API Key初始化設定
-openai.api_key = os.getenv('OPENAI_API_KEY')
 
 @app.route("/")
 def index():
@@ -44,9 +41,9 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    GPT_answer = GPT_response(msg)
-    print(GPT_answer)
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
+    hug_answer = hug_response(msg)
+    print(hug_answer)
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(hug_answer))
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
