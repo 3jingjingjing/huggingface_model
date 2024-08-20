@@ -7,7 +7,7 @@ import tempfile
 import datetime
 import time
 import string
-##from huggingface_model import hug_response
+from huggingface_model import hug_response
 
 app = Flask(__name__, template_folder='templates')
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
@@ -38,8 +38,8 @@ def callback():
         abort(400)
     return 'OK'
 
-##@handler.add(MessageEvent, message=TextMessage)
-##def handle_message(event):
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
     msg = event.message.text
     hug_answer = hug_response(msg)
     print(hug_answer)
